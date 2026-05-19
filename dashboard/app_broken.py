@@ -9,15 +9,11 @@ from datetime import datetime
 from sklearn.ensemble import RandomForestRegressor
 import warnings
 
-# Add the parent directory to the Python path
-sys.path.append('/Users/eshavijay/Documents/obsvault/TikTok-Dashboard')
+# Add parent directory to path so we can import tiktok_data_processor
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from tiktok_data_processor import TikTokDataProcessor
 from tiktok_advanced_analytics import AdvancedAnalytics
-import sys
-from datetime import datetime
-from sklearn.ensemble import RandomForestRegressor
-import warnings
 from tiktok_data_processor import TikTokDataProcessor
 from tiktok_advanced_analytics import AdvancedAnalytics
 
@@ -86,13 +82,11 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ============================================
-# DATA LOADING
-# ============================================
 @st.cache_data
 def load_data():
     # Use our professional data processor
-    data_path = '/Users/eshavijay/Documents/obsvault/TikTok-Dashboard/data/tiktok_posts.csv'
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_path = os.path.join(script_dir, '..', 'data', 'tiktok_posts.csv')
 
     # Use our professional data processor
     processor = TikTokDataProcessor()
