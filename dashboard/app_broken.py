@@ -13,6 +13,15 @@ import warnings
 sys.path.append('/Users/eshavijay/Documents/obsvault/TikTok-Dashboard')
 
 from tiktok_data_processor import TikTokDataProcessor
+from tiktok_advanced_analytics import AdvancedAnalytics
+import sys
+from datetime import datetime
+from sklearn.ensemble import RandomForestRegressor
+import warnings
+from tiktok_data_processor import TikTokDataProcessor
+from tiktok_advanced_analytics import AdvancedAnalytics
+
+warnings.filterwarnings('ignore')
 warnings.filterwarnings('ignore')
 
 # ============================================
@@ -379,6 +388,40 @@ if len(filtered_df) > 0:
             "Shares": st.column_config.NumberColumn(format="%d"),
         }
     )
+
+# ============================================
+# SECTION 5: AI-POWERED INSIGHTS
+# ============================================
+st.header("🔮 AI-Powered Insights")
+
+# Initialize advanced analytics
+analytics = AdvancedAnalytics()
+model_results = analytics.train_engagement_predictor(df)
+
+if model_results:
+    st.markdown("### Engagement Prediction Model")
+    st.success(f"Model trained successfully! MAE: {model_results['mae']:.2f}")
+
+    # Show feature importance if available
+    if 'model' in model_results and hasattr(model_results['model'], 'feature_importances_'):
+        st.markdown("### Feature Importance for Engagement")
+        feature_names = ['hour', 'day_num', 'hashtag_count', 'caption_length']
+        importance_scores = model_results['model'].feature_importances_
+        importance_df = pd.DataFrame({
+            'Feature': feature_names,
+            'Importance': importance_scores
+        }).sort_values('Importance', ascending=False)
+
+        fig = px.bar(importance_df, x='Feature', y='Importance',
+                    title="What Drives TikTok Engagement?",
+                    color='Importance', color_continuous_scale='blues')
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Show insights
+        top_feature = importance_df.iloc[0]['Feature']
+        st.info(f"**Key Insight**: {top_feature.replace('_', ' ').title()} is the most important factor for engagement.")
+else:
+    st.warning("Not enough data to train prediction model.")
 
 st.markdown("---")
 
