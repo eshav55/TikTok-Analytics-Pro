@@ -1,0 +1,16 @@
+name: Sync to Hugging Face Hub
+on:
+  push:
+    branches: [main]
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: huggingface/hub-sync@v1.0
+        with:
+          github_repo_id: eshav55/TikTok-Analytics-Pro
+          huggingface_repo_id: eshavijay/tiktok-analytics-pro
+          hf_token: ${{ secrets.HF_TOKEN }}
