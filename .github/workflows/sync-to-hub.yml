@@ -17,4 +17,7 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
+          # Pull latest changes from Hugging Face first
+          git pull https://eshavijay:$HF_TOKEN@huggingface.co/spaces/eshavijay/tiktok-analytics-pro main --rebase || true
+          # Then push
           git push https://eshavijay:$HF_TOKEN@huggingface.co/spaces/eshavijay/tiktok-analytics-pro main
